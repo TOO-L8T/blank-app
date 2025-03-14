@@ -1,6 +1,5 @@
 import streamlit as st
 
-st.write("Loaded secrets:", st.secrets)
 
 # ✅ Use the correct connection name from secrets.toml
 conn = st.connection("my_example_connection", type="snowflake")
