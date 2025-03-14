@@ -1,22 +1,27 @@
 import streamlit as st
 
-# Manually extract secrets
+# ✅ Check if secrets are being loaded
+if "snowflake" in st.secrets["connections"]:
+    st.write("✅ Secrets are being loaded correctly!")
+else:
+    st.write("❌ Secrets are NOT being loaded!")
+
+# ✅ Extract Snowflake credentials
 secrets = st.secrets["connections"]["snowflake"]
 
-# Connect using extracted secrets
+# ✅ Connect to Snowflake
 conn = st.connection(
     "snowflake",
     type="snowflake",
-    account=secrets["LLQXEZW-UNB86947"],
-    user=secrets["TOOL8T"],
-    authenticator=secrets["externalbrowser"],
-    role=secrets["ACCOUNTADMIN"],
-    warehouse=secrets["STREAMLIT_WH"],
-    database=secrets["PETS"],
-    schema=secrets["PUBLIC"],
+    account=secrets["account"],
+    user=secrets["user"],
+    authenticator=secrets["authenticator"],
+    role=secrets["role"],
+    warehouse=secrets["warehouse"],
+    database=secrets["database"],
+    schema=secrets["schema"],
 )
 
-df = conn.query("SELECT * FROM PETS.PUBLIC.MYTABLE;", ttl="10m")
-
-for row in df.itertuples():
-    st.write(f"{row.NAME} has a :{row.PET}:")
+# ✅ Test a simple query
+df = conn.query("SELECT CURRENT_DATABASE(), CURRENT_SCHEMA();")
+st.write(df)
