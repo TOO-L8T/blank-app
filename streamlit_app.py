@@ -1,7 +1,13 @@
 import streamlit as st
 
-conn = st.connection("snowflake", type="snowflake")
-df = conn.query("SELECT * FROM mytable;", ttl="10m")
+st.write("Loaded secrets:", st.secrets)
+
+
+conn = st.connection("snowflake")
+
+
+df = conn.query("SELECT * FROM PETS.PUBLIC.mytable;", ttl="10m")
+
 
 for row in df.itertuples():
     st.write(f"{row.NAME} has a :{row.PET}:")
